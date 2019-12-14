@@ -20,10 +20,12 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
 
   test "should only show CRUD links when logged in" do
     get books_url
+    assert_select "a", "New Book"
     assert_select "a", "Edit"
     assert_select "a", "Destroy"
     sign_out :author
     get books_url
+    assert_select "a", {text: "New Book", count: 0}, "Should not see new book link."
     assert_select "a", {text: "Edit", count: 0}, "Should not see edit link"
     assert_select "a", {text: "Destroy", count: 0}, "Should not see destroy link"
   end
@@ -68,6 +70,14 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     book = Book.find(bad_book.id)
     assert_equal bad_book.title, book.title, "Book should not be edited by different user."
+  end
+
+  test "only logged authors should be able to create books" do
+    sign_out :author
+
+    assert_no_changes('Book.count') do
+      post books_url, params: { book: { author_id: @book.author.id, title: @book.title } }
+    end
   end
 
   test "should destroy book" do

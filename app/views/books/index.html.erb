@@ -28,4 +28,4 @@
 
 <br>
 
-<%= link_to 'New Book', new_book_path %>
+<%= link_to 'New Book', new_book_path unless current_author.nil? %>

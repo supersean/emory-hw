@@ -12,6 +12,8 @@
   <body>
 
     <ul>
+      <%= link_to "Home", root_path %>
+      <%= link_to "Books", books_path %>
       <% unless current_author %>
         <%= link_to "Sign in", new_author_session_path %>
         <%= link_to "Sign up", new_author_registration_path %>
