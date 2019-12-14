@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :authenticate_author!
+  before_action :authenticate_author!, except: [:index]
   before_action :set_book, only: [:show, :edit, :update, :destroy]
 
 
@@ -27,16 +27,13 @@ class BooksController < ApplicationController
   # POST /books.json
   def create
     @book = Book.new(book_params)
-    puts @book.author.inspect
     respond_to do |format|
       if @book.save
         format.html { redirect_to @book, notice: 'Book was successfully created.' }
         format.json { render :show, status: :created, location: @book }
-        puts "success"
       else
         format.html { render :new }
         format.json { render json: @book.errors, status: :unprocessable_entity }
-        puts format.inspect
       end
     end
   end
@@ -45,12 +42,17 @@ class BooksController < ApplicationController
   # PATCH/PUT /books/1.json
   def update
     respond_to do |format|
-      if @book.update(book_params)
-        format.html { redirect_to @book, notice: 'Book was successfully updated.' }
-        format.json { render :show, status: :ok, location: @book }
+      if current_author.id == @book.author.id
+        if @book.update(book_params)
+          format.html { redirect_to @book, notice: 'Book was successfully updated.' }
+          format.json { render :show, status: :ok, location: @book }
+        else
+          format.html { render :edit }
+          format.json { render json: @book.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { render :edit }
-        format.json { render json: @book.errors, status: :unprocessable_entity }
+        format.html { redirect_to @book, notice: "Book cannot be edited." }
+        format.json { render status: :bad_request}
       end
     end
   end

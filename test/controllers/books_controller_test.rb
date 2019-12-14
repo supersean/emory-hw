@@ -7,9 +7,25 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     @book = books(:one)
   end
 
-  test "should get index" do
+  test "should get index when logged in" do
     get books_url
     assert_response :success
+  end
+
+  test "should get index when not logged in" do
+    sign_out :author
+    get books_url
+    assert_response :success
+  end
+
+  test "should only show CRUD links when logged in" do
+    get books_url
+    assert_select "a", "Edit"
+    assert_select "a", "Destroy"
+    sign_out :author
+    get books_url
+    assert_select "a", {text: "Edit", count: 0}, "Should not see edit link"
+    assert_select "a", {text: "Destroy", count: 0}, "Should not see destroy link"
   end
 
   test "should get new" do
@@ -17,9 +33,9 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should redirect when author not logged in" do
+  test "should redirect when author not logged in (not index)" do
     sign_out :author
-    get books_url
+    get new_book_url
     assert_response :redirect
   end
 
@@ -44,6 +60,14 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
   test "should update book" do
     patch book_url(@book), params: { book: { author: @book.author, title: @book.title } }
     assert_redirected_to book_url(@book)
+  end
+
+  test "authors should only be able to edit their own books" do
+    bad_book = Book.create title: "Toms life", author: authors(:tom)
+    patch book_url(bad_book), params: { book: { author: bad_book.author, title: "seans life" } }
+    assert_response :redirect
+    book = Book.find(bad_book.id)
+    assert_equal bad_book.title, book.title, "Book should not be edited by different user."
   end
 
   test "should destroy book" do
