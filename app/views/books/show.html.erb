@@ -5,7 +5,7 @@
 
 <p>
   <strong>Author:</strong>
-  <%= @book.author %>
+  <%= link_to @book.author.name, author_path(@book.author)  %>
 </p>
 
 <p>

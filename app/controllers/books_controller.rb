@@ -29,6 +29,7 @@ class BooksController < ApplicationController
     respond_to do |format|
       unless current_author.nil?
         @book = Book.new(book_params)
+        @book.author = current_author
         if @book.save
           format.html { redirect_to @book, notice: 'Book was successfully created.' }
           format.json { render :show, status: :created, location: @book }

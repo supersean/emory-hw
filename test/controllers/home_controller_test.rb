@@ -19,7 +19,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select "a", { text: "Sign up", count: 0}, "Sign up link displayed."
     assert_select "a", "Books"
     assert_select "a", "Home"
-    assert_select "span", @author.name, "Name is not displayed"
+    assert_select "a", @author.name, "Name is not displayed"
   end
 
 end

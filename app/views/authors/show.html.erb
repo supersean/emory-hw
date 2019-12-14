@@ -1,17 +1,19 @@
 <p>
-  <strong>Title:</strong>
+  <strong>Name:</strong>
   <%= @author.name %>
 </p>
 
 <p>
-  <strong>Author:</strong>
+  <strong>Email:</strong>
   <%= @author.email %>
 </p>
 
 <h3>Books:</h3>
 <ul>
   <% @author.books.each do |book| %>
-    <li><%= book.title %></li>
+    <li><div style="background-image: url('<%= url_for(book.cover_image) %>'); background-size:cover;height:150px; width:95px; padding-top:10px; text-align:center">
+      <%= link_to book.title, book_path(book), style: "background-color:black; color:white; padding:5px;" %>
+    </div></li>
   <% end %>
 </ul>
 
