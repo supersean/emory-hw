@@ -10,6 +10,16 @@
   </head>
 
   <body>
+
+    <ul>
+      <% unless current_author %>
+        <%= link_to "Sign in", new_author_session_path %>
+        <%= link_to "Sign up", new_author_registration_path %>
+      <% else %>
+        <%= link_to("Sign out", destroy_author_session_path, method: :delete) %>
+      <% end %>
+    </ul>
+  
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <%= yield %>
