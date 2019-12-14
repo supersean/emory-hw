@@ -8,7 +8,7 @@ class AuthorsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index" do
-    get authors_index_url
+    get authors_url
     assert_response :success
   end
 
@@ -37,7 +37,7 @@ class AuthorsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not show edit links for other authors" do
-    get authors_index_url
+    get authors_url
     assert_select "a", { text: "Edit", count: 1 }, "More than 1 edit link is present"
   end
 

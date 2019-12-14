@@ -73,7 +73,7 @@ class BooksController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render :edit }
+        format.html { redirect_to books_url, notice: 'Book cannot be deleted.' }
         format.json { render json: "Book cannot be deleted.", status: :bad_request }
       end
     end
