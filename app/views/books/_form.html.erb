@@ -17,11 +17,6 @@
   </div>
 
   <div class="field">
-    <%= form.label :author %>
-    <%= form.collection_select(:author_id, Author.all, :id, :name) %>
-  </div>
-
-  <div class="field">
     <%= form.label :cover_image %>
     <%= form.file_field :cover_image %>
   </div>
