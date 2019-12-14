@@ -8,5 +8,14 @@
   <%= @book.author %>
 </p>
 
+<p>
+  <strong>Cover Image:</strong>
+  <% if @book.cover_image.attached? %>
+    <%= image_tag url_for(@book.cover_image), { height: 100 } %>
+  <% else %>
+    No image uploaded.
+  <% end %>
+</p>
+
 <%= link_to 'Edit', edit_book_path(@book) %> |
 <%= link_to 'Back', books_path %>

@@ -93,5 +93,6 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference('Book.count') do
       delete book_url(tom.books.first)
     end
+    assert_redirected_to books_url
   end
 end
