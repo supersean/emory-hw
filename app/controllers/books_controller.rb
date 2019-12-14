@@ -1,5 +1,7 @@
 class BooksController < ApplicationController
+  before_action :authenticate_author!
   before_action :set_book, only: [:show, :edit, :update, :destroy]
+
 
   # GET /books
   # GET /books.json
@@ -25,14 +27,16 @@ class BooksController < ApplicationController
   # POST /books.json
   def create
     @book = Book.new(book_params)
-
+    puts @book.author.inspect
     respond_to do |format|
       if @book.save
         format.html { redirect_to @book, notice: 'Book was successfully created.' }
         format.json { render :show, status: :created, location: @book }
+        puts "success"
       else
         format.html { render :new }
         format.json { render json: @book.errors, status: :unprocessable_entity }
+        puts format.inspect
       end
     end
   end
@@ -69,6 +73,6 @@ class BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(:title, :author)
+      params.require(:book).permit(:title, :author_id)
     end
 end
