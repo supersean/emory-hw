@@ -7,6 +7,8 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     @book = books(:seans_struggle)
   end
 
+  # index
+
   test "should get index when logged in" do
     get books_url
     assert_response :success
@@ -30,6 +32,8 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_select "a", {text: "Destroy", count: 0}, "Should not see destroy link"
   end
 
+  # new
+
   test "should get new" do
     get new_book_url
     assert_response :success
@@ -41,6 +45,8 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
+  # create
+
   test "should create book" do
     assert_difference('Book.count') do
       post books_url, params: { book: { author_id: @book.author.id, title: @book.title } }
@@ -49,15 +55,28 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to book_url(Book.last)
   end
 
+  test "only logged authors should be able to create books" do
+    sign_out :author
+    assert_no_changes('Book.count') do
+      post books_url, params: { book: { author_id: @book.author.id, title: @book.title } }
+    end
+  end
+
+  # show
+
   test "should show book" do
     get book_url(@book)
     assert_response :success
   end
 
+  # edit
+
   test "should get edit" do
     get edit_book_url(@book)
     assert_response :success
   end
+
+  # update
 
   test "should update book" do
     patch book_url(@book), params: { book: { author: @book.author, title: @book.title } }
@@ -72,13 +91,7 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_equal bad_book.title, book.title, "Book should not be edited by different user."
   end
 
-  test "only logged authors should be able to create books" do
-    sign_out :author
-
-    assert_no_changes('Book.count') do
-      post books_url, params: { book: { author_id: @book.author.id, title: @book.title } }
-    end
-  end
+  # destroy
 
   test "should destroy book" do
     assert_difference('Book.count', -1) do
@@ -95,4 +108,5 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to books_url
   end
+
 end

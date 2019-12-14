@@ -6,4 +6,9 @@ class Author < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  def editable_by? editing_author
+    !editing_author.nil? && editing_author.id == id
+  end
+
 end

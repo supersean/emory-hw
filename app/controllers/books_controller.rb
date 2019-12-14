@@ -47,7 +47,7 @@ class BooksController < ApplicationController
   # PATCH/PUT /books/1.json
   def update
     respond_to do |format|
-      if current_author.id == @book.author.id
+      if @book.editable_by? current_author
         if @book.update(book_params)
           format.html { redirect_to @book, notice: 'Book was successfully updated.' }
           format.json { render :show, status: :ok, location: @book }
@@ -65,7 +65,7 @@ class BooksController < ApplicationController
   # DELETE /books/1
   # DELETE /books/1.json
   def destroy
-    unless @book.author.id != current_author.id
+    if @book.editable_by? current_author
       @book.destroy
       respond_to do |format|
         format.html { redirect_to books_url, notice: 'Book was successfully destroyed.' }

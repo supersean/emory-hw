@@ -9,7 +9,7 @@ class AuthorsController < ApplicationController
   end
 
   def edit
-    if current_author.id == @author.id
+    if @author.editable_by? current_author
       render :edit
     else
       redirect_to authors_url
@@ -18,7 +18,7 @@ class AuthorsController < ApplicationController
 
   def update
     respond_to do |format|
-      if current_author.id == @author.id && @author.update(author_params) 
+      if @author.editable_by?(current_author) && @author.update(author_params) 
         format.html { redirect_to @author, notice: "Your information was updated." }
         format.json { render :show, status: :ok, location: @author }
       else
