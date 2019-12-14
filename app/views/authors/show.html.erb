@@ -1,0 +1,19 @@
+<p>
+  <strong>Title:</strong>
+  <%= @author.name %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= @author.email %>
+</p>
+
+<h3>Books:</h3>
+<ul>
+  <% @author.books.each do |book| %>
+    <li><%= book.title %></li>
+  <% end %>
+</ul>
+
+<%= link_to 'Edit', edit_author_path(@author.id) if current_author.id == @author.id %>
+<%= link_to 'Back', authors_path %>

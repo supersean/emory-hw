@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class BooksTest < ApplicationSystemTestCase
   setup do
-    @book = books(:one)
+    @book = books(:seans_struggle)
   end
 
   test "visiting the index" do

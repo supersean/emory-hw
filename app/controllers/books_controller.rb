@@ -65,10 +65,17 @@ class BooksController < ApplicationController
   # DELETE /books/1
   # DELETE /books/1.json
   def destroy
-    @book.destroy
-    respond_to do |format|
-      format.html { redirect_to books_url, notice: 'Book was successfully destroyed.' }
-      format.json { head :no_content }
+    unless @book.author.id != current_author.id
+      @book.destroy
+      respond_to do |format|
+        format.html { redirect_to books_url, notice: 'Book was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { render :edit }
+        format.json { render json: "Book cannot be deleted.", status: :bad_request }
+      end
     end
   end
 

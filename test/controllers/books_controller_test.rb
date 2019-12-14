@@ -4,7 +4,7 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
   setup do
     @author = authors(:sean)
     sign_in @author
-    @book = books(:one)
+    @book = books(:seans_struggle)
   end
 
   test "should get index when logged in" do
@@ -86,5 +86,12 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to books_url
+  end
+
+  test "should only destroy owned books" do
+    tom = authors :tom
+    assert_no_difference('Book.count') do
+      delete book_url(tom.books.first)
+    end
   end
 end
