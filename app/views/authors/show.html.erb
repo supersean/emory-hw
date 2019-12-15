@@ -11,8 +11,8 @@
 <h3>Books:</h3>
 <ul>
   <% @author.books.each do |book| %>
-    <li><div style="background-image: url('<%= url_for(book.cover_image) %>'); background-size:cover;height:150px; width:95px; padding-top:10px; text-align:center">
-      <%= link_to book.title, book_path(book), style: "background-color:black; color:white; padding:5px;" %>
+    <li><div class="book" style="background-image: url('<%= url_for(book.cover_image) %>')">
+      <%= link_to book.title, book_path(book) %>
     </div></li>
   <% end %>
 </ul>
